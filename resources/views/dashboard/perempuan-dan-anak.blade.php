@@ -109,8 +109,8 @@
                 Setiap substansi memiliki kriteria data berbeda. KPI dan grafik mengikuti substansi aktif serta data contoh atau data hasil impor yang tersedia.
             </div>
 
-            <!-- 6 KPI CARDS -->
-            <div class="grid grid-cols-6 gap-4">
+            <!-- 4 KPI CARDS (Rata Tengah & Simetris) -->
+            <div class="grid grid-cols-4 gap-6">
                 <div class="bg-white rounded-xl p-5 text-slate-800 shadow-sm border border-slate-100">
                     <div class="text-xs text-slate-500 mb-1 font-semibold">Jumlah kasus</div>
                     <div class="text-2xl font-bold mb-2">{{ $kpi['jumlah_kasus'] ?? 0 }}</div>
@@ -130,16 +130,6 @@
                     <div class="text-xs text-slate-500 mb-1 font-semibold">Sisa tindak lanjut</div>
                     <div class="text-2xl font-bold mb-2">{{ $kpi['sisa_tindak_lanjut'] ?? 0 }}</div>
                     <div class="text-xs text-slate-400">Target belum selesai</div>
-                </div>
-                <div class="bg-white rounded-xl p-5 text-slate-800 shadow-sm border border-slate-100">
-                    <div class="text-xs text-slate-500 mb-1 font-semibold">Kewajiban</div>
-                    <div class="text-2xl font-bold mb-2">Rp {{ number_format(($kpi['kewajiban'] ?? 0) / 1000000, 0, ',', '.') }} jt</div>
-                    <div class="text-xs text-slate-400">Nominal tercatat</div>
-                </div>
-                <div class="bg-white rounded-xl p-5 text-slate-800 shadow-sm border border-slate-100">
-                    <div class="text-xs text-slate-500 mb-1 font-semibold">Sudah dipenuhi</div>
-                    <div class="text-2xl font-bold mb-2">Rp {{ number_format(($kpi['sudah_dipenuhi'] ?? 0) / 1000000, 0, ',', '.') }} jt</div>
-                    <div class="text-xs text-slate-400">Pemenuhan</div>
                 </div>
             </div>
 
