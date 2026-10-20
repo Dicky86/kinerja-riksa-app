@@ -22,7 +22,8 @@
             <p class="text-slate-500 text-sm">Silakan masuk untuk mengakses Kinerja Riksa</p>
         </div>
 
-        <form action="{{ route('dashboard.index') }}" method="GET">
+        <!-- Bagian ini sudah diubah mengarah ke route('home') -->
+        <form action="{{ route('home') }}" method="GET">
             <div class="space-y-5">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email atau Username</label>
@@ -38,7 +39,6 @@
             </div>
         </form>
 
-        <!-- Tambahan Link ke Halaman Daftar -->
         <div class="mt-8 text-center text-sm text-slate-600">
             Belum punya akun? 
             <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:text-blue-700 transition">Daftar sekarang</a>

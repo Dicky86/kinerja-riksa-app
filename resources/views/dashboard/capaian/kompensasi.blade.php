@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Capaian - Kinerja Riksa</title>
+    <title>Dashboard Kompensasi - Kinerja Riksa</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Plugin Alpine.js Persist (Wajib di atas script utama alpine agar tema tersimpan) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
     <!-- Alpine.js untuk kontrol state (Dashboard, Impor, Pengaturan, Tema, Modal Logout, dan Modal Profil) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Inter', sans-serif; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body class="bg-slate-50 flex flex-col h-screen overflow-hidden" 
       x-data="{ 
           currentMenu: 'dashboard', 
-          theme: 'light',
+          theme: $persist('light'),
           showLogoutModal: false,
           showProfileCard: false,
           initTheme() {
@@ -37,8 +40,8 @@
         </div>
 
         <div class="flex flex-col items-center justify-center text-center">
-            <h1 class="text-xs md:text-sm font-bold tracking-tight">Hubungan Kerja - Kasus Penanganan Ijazah</h1>
-            <span class="text-[11px] mt-0.5 text-slate-400">Data: 6 baris sumber</span>
+            <h1 class="text-xs md:text-sm font-bold tracking-tight">Hubungan Kerja - Kompensasi</h1>
+            <span class="text-[11px] mt-0.5 text-slate-400">Data contoh · 5 baris sumber</span>
         </div>
         
         <div class="flex items-center justify-end space-x-6">
@@ -63,13 +66,20 @@
     <div class="flex-1 flex overflow-hidden">
 
         <!-- SIDEBAR -->
-        <aside class="w-64 bg-[#162133] text-slate-300 flex flex-col shrink-0 border-r border-slate-800">
+        <aside class="w-64 bg-[#162133] text-slate-300 flex flex-col shrink-0 border-r border-slate-800 relative pb-32">
             <div class="flex-1 overflow-y-auto py-6 px-4">
-                <div class="text-xs font-semibold text-slate-500 mb-4 px-2 tracking-wider">MENU UTAMA</div>
+                
+                <!-- Menu Home -->
+                <a href="{{ route('home') }}" class="flex items-center px-3 py-3 rounded-xl hover:bg-[#1e293b] hover:text-white text-slate-300 group font-medium text-sm transition mb-6">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Home
+                </a>
+
+                <div class="text-[10px] font-semibold text-slate-500 mb-3 px-2 tracking-wider uppercase">MENU UTAMA</div>
                 <nav class="space-y-1">
                     <!-- Dashboard Capaian -->
                     <a href="#" @click.prevent="currentMenu = 'dashboard'" :class="currentMenu === 'dashboard' ? 'bg-[#1e293b] text-white' : 'hover:bg-[#1e293b] hover:text-white text-slate-300'" class="flex items-center px-3 py-3 rounded-xl group font-medium text-sm transition">
-                        <svg class="w-5 h-5 mr-3 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <svg class="w-5 h-5 mr-3 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                         Dashboard Capaian
                     </a>
                     <!-- Impor Data -->
@@ -85,12 +95,17 @@
                 </nav>
             </div>
             
-            <!-- Tombol Logout (Memicu Modal Konfirmasi) -->
-            <div class="p-4 border-t border-slate-700">
-                <button @click="showLogoutModal = true" class="w-full flex items-center px-3 py-3 hover:bg-[#1e293b] text-slate-400 hover:text-white rounded-xl transition text-sm text-left">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    Logout
-                </button>
+            <!-- Area Bawah Sidebar -->
+            <div class="absolute bottom-0 w-full bg-[#162133]">
+                <div class="px-4 py-2 border-t border-slate-700">
+                    <button @click="showLogoutModal = true" class="w-full flex items-center px-3 py-2.5 hover:bg-[#1e293b] text-slate-400 hover:text-white rounded-xl transition text-sm text-left">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Logout
+                    </button>
+                </div>
+                <div class="px-6 pb-6 pt-2 text-[10px] text-slate-500 leading-relaxed">
+                    Dashboard terintegrasi untuk pemantauan capaian berdasarkan data unggahan yang telah divalidasi.
+                </div>
             </div>
         </aside>
 
@@ -98,7 +113,7 @@
         <main class="flex-1 overflow-y-auto p-8 bg-slate-50 space-y-8 relative">
             
             <!-- ======================================================= -->
-            <!-- TAB: HALAMAN PENGATURAN -->
+            <!-- TAB: HALAMAN PENGATURAN (SAMA PERSIS DENGAN GAMBAR 1) -->
             <!-- ======================================================= -->
             <div x-show="currentMenu === 'settings'" x-transition class="space-y-6" style="display: none;">
                 <div class="p-8 rounded-3xl border shadow-sm transition-colors duration-200"
@@ -171,7 +186,7 @@
             </div>
 
             <!-- ======================================================= -->
-            <!-- TAB: HALAMAN IMPOR DATA -->
+            <!-- TAB: HALAMAN IMPOR DATA (SAMA PERSIS DENGAN GAMBAR 2) -->
             <!-- ======================================================= -->
             <div x-show="currentMenu === 'import'" x-transition class="space-y-6" style="display: none;">
                 <div class="p-8 rounded-3xl border shadow-sm transition-colors duration-200"
@@ -225,13 +240,13 @@
             </div>
 
             <!-- ======================================================= -->
-            <!-- TAB: DASHBOARD UTAMA (DEFAULT) -->
+            <!-- TAB: DASHBOARD UTAMA KOMPENSASI -->
             <!-- ======================================================= -->
             <div x-show="currentMenu === 'dashboard'" x-transition class="space-y-8">
                 
-                <!-- Judul Section -->
+                <!-- Judul Section (Ukuran & Style disamakan plekk dengan Kasus Ijazah) -->
                 <div>
-                    <span class="text-xs font-bold text-emerald-600 tracking-wider uppercase">PEMBINAAN PEMERIKSAAN NORMA KETENAGAKERJAAN</span>
+                    <span class="text-xs font-bold text-emerald-600 tracking-wider uppercase">BINA PEMERIKSAAN NORMA KETENAGAKERJAAN</span>
                     <h2 class="text-2xl font-bold mt-1 tracking-tight" :class="initTheme() === 'dark' ? 'text-slate-100' : 'text-slate-900'">Dashboard Capaian Kinerja</h2>
                     <p class="text-xs md:text-sm mt-1" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Pantau KPI, grafik, peta provinsi, tabel, dan notifikasi berdasarkan substansi, periode, serta data unggahan yang dipilih.</p>
                 </div>
@@ -245,24 +260,13 @@
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
                                 <option>Hubungan Kerja</option>
-                                <option>Perempuan dan Anak</option>
-                                <option>K3</option>
-                                <option>Waktu Kerja Waktu Istirahat (WKWI)</option>
-                                <option>Penyidikan</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1.5" :class="initTheme() === 'dark' ? 'text-slate-300' : 'text-slate-500'">Jenis Capaian</label>
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
-                                <option>Kasus Penanganan Ijazah</option>
                                 <option>Kompensasi</option>
-                                <option>Waspadu</option>
-                                <option>Penetapan Ulang</option>
-                                <option>Data Putusan Sidik</option>
-                                <option>Pengawasan TKA</option>
-                                <option>Norma K3</option>
-                                <option>Pemeriksaan Norma Kerja & Perempuan</option>
                             </select>
                         </div>
                         <div>
@@ -270,8 +274,6 @@
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
                                 <option>Semua Tahun</option>
-                                <option>2025</option>
-                                <option>2026</option>
                             </select>
                         </div>
                         <div>
@@ -279,11 +281,11 @@
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
                                 <option>Semua Bulan</option>
-                                <option>Januari</option><option>Februari</option><option>Maret</option><option>April</option><option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option><option>September</option><option>Oktober</option><option>November</option><option>Desember</option>
                             </select>
                         </div>
                     </div>
 
+                    <!-- Kolom Cari Data & Tombol Data Contoh (Disamakan persis Kasus Ijazah) -->
                     <div class="pt-4 border-t flex flex-col md:flex-row items-end gap-4" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'">
                         <div class="flex-1 w-full">
                             <label class="block text-xs font-semibold mb-1.5" :class="initTheme() === 'dark' ? 'text-slate-300' : 'text-slate-500'">Cari data</label>
@@ -299,123 +301,71 @@
                     </div>
                 </div>
 
-                <!-- RINGKASAN DATA (KPI CARDS) -->
+                <!-- KPI CARDS KOMPENSASI -->
                 <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200"
                      :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                         <div>
-                            <h3 class="text-base font-bold">Ringkasan Data</h3>
-                            <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">KPI dihitung dari Data contoh, bukan data aktual.</p>
+                            <h3 class="text-base font-bold">Analisis Kompensasi</h3>
+                            <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Kolom sumber: No Surat, Tanggal Surat, Perusahaan, Provinsi, Nominal Pembayaran, Status, Jumlah Pekerja.</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2 text-xs">
                             <span class="px-3 py-1 rounded-full font-medium" :class="initTheme() === 'dark' ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'">Substansi: Hubungan Kerja</span>
                             <span class="px-3 py-1 rounded-full font-medium" :class="initTheme() === 'dark' ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'">Sumber: Data contoh</span>
-                            <span class="px-3 py-1 rounded-full font-medium" :class="initTheme() === 'dark' ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'">6 baris</span>
-                            <span class="px-3 py-1 rounded-full font-medium" :class="initTheme() === 'dark' ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'">11 kolom</span>
+                            <span class="px-3 py-1 rounded-full font-medium" :class="initTheme() === 'dark' ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-600'">5 baris</span>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                         <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
                             <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Jumlah Pengaduan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">70</span></div>
-                            <span class="text-[11px] text-slate-400">Dihitung dari kolom jumlah</span>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Ijazah yang Ditahan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">49</span></div>
-                            <span class="text-[11px] text-slate-400">Ijazah Ditahan</span>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Pengaduan yang Ditindaklanjuti</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">59</span></div>
-                            <span class="text-[11px] text-slate-400">Pengaduan yang Ditindaklanjuti</span>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Ijazah yang Dikembalikan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">40</span></div>
-                            <span class="text-[11px] text-slate-400">Ijazah Dikembalikan</span>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Jumlah Perusahaan yang Dilaporkan</span>
                             <div class="my-3"><span class="text-3xl font-extrabold">5</span></div>
-                            <span class="text-[11px] text-slate-400">Total perusahaan unik</span>
+                            <span class="text-[11px] text-slate-400">No Surat unik</span>
+                        </div>
+                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Sudah Dibayar</span>
+                            <div class="my-3"><span class="text-3xl font-extrabold">3</span></div>
+                            <span class="text-[11px] text-slate-400">Status sudah dibayar/lunas</span>
+                        </div>
+                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Rentang Nominal</span>
+                            <div class="my-3"><span class="text-base font-extrabold">Rp 12jt – 30jt</span></div>
+                            <span class="text-[11px] text-slate-400">Minimum & maksimum</span>
+                        </div>
+                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Jumlah Pekerja</span>
+                            <div class="my-3"><span class="text-3xl font-extrabold">43</span></div>
+                            <span class="text-[11px] text-slate-400">Total pekerja terdampak</span>
+                        </div>
+                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Rata-rata/Pekerja</span>
+                            <div class="my-3"><span class="text-base font-extrabold">Rp 2,3 Jt</span></div>
+                            <span class="text-[11px] text-slate-400">Nominal / pekerja</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- TABEL PERUSAHAAN -->
-                <div class="rounded-2xl border shadow-sm overflow-hidden transition-colors duration-200"
-                     :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                    <div class="p-6 border-b" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'">
-                        <h3 class="text-base font-bold">Perusahaan Paling Banyak Diadukan</h3>
-                        <p class="text-xs mt-0.5" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">TOP 5 perusahaan terbanyak dilaporkan berdasarkan data dan filter aktif.</p>
+                <!-- CHARTS GRID KOMPENSASI -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl border shadow-sm flex flex-col" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                        <h3 class="text-sm font-bold mb-1">Tren nominal kompensasi</h3>
+                        <p class="text-[11px] text-slate-400 mb-4">Berdasarkan Tanggal Surat.</p>
+                        <div id="chart-tren" class="flex-1 w-full min-h-[250px]"></div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-[#162133] text-white text-xs uppercase tracking-wider">
-                                    <th class="py-3.5 px-6 font-semibold w-28">Peringkat</th>
-                                    <th class="py-3.5 px-6 font-semibold">Nama Perusahaan</th>
-                                    <th class="py-3.5 px-6 font-semibold text-right">Jumlah Pengaduan</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y text-sm" :class="initTheme() === 'dark' ? 'divide-slate-700 text-slate-200' : 'divide-slate-100 text-slate-700'">
-                                <tr class="transition"><td class="py-3.5 px-6 font-medium">1</td><td class="py-3.5 px-6 font-medium">PT Bahari Sentosa</td><td class="py-3.5 px-6 text-right">1</td></tr>
-                                <tr class="transition"><td class="py-3.5 px-6 font-medium">1</td><td class="py-3.5 px-6 font-medium">PT Bumi Kencana</td><td class="py-3.5 px-6 text-right">1</td></tr>
-                                <tr class="transition"><td class="py-3.5 px-6 font-medium">1</td><td class="py-3.5 px-6 font-medium">PT Cipta Mandiri</td><td class="py-3.5 px-6 text-right">1</td></tr>
-                                <tr class="transition"><td class="py-3.5 px-6 font-medium">1</td><td class="py-3.5 px-6 font-medium">PT Nusantara Karya</td><td class="py-3.5 px-6 text-right">1</td></tr>
-                                <tr class="transition"><td class="py-3.5 px-6 font-medium">1</td><td class="py-3.5 px-6 font-medium">PT Sejahtera Abadi</td><td class="py-3.5 px-6 text-right">1</td></tr>
-                            </tbody>
-                        </table>
+                    <div class="p-6 rounded-2xl border shadow-sm flex flex-col" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                        <h3 class="text-sm font-bold mb-1">Jumlah Pengaduan per Provinsi</h3>
+                        <p class="text-[11px] text-slate-400 mb-4">Berdasarkan provinsi filter aktif.</p>
+                        <div id="chart-provinsi" class="flex-1 w-full min-h-[250px]"></div>
                     </div>
-                </div>
-
-                <!-- GRAFIK CAPAIAN -->
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-base font-bold" :class="initTheme() === 'dark' ? 'text-slate-100' : 'text-slate-800'">Grafik Capaian</h3>
-                        <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Grafik dihitung dari Data contoh sesuai filter aktif.</p>
+                    <div class="p-6 rounded-2xl border shadow-sm flex flex-col" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                        <h3 class="text-sm font-bold mb-1">Status kompensasi</h3>
+                        <p class="text-[11px] text-slate-400 mb-4">Persentase status pembayaran.</p>
+                        <div id="chart-status" class="flex-1 w-full flex justify-center items-center min-h-[200px]"></div>
                     </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <h4 class="text-sm font-bold">Ijazah Ditahan vs Ijazah Dikembalikan</h4>
-                            <p class="text-[11px] mb-6 text-slate-400">Dihitung dari baris yang lolos filter aktif.</p>
-                            <div class="h-48 flex items-end justify-around border-b pb-2 px-12" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                <div class="w-12 bg-blue-500 rounded-t-lg h-[70%]"></div>
-                                <div class="w-12 bg-teal-500 rounded-t-lg h-[60%]"></div>
-                            </div>
-                            <div class="flex justify-around text-xs text-slate-400 mt-3 font-medium"><span>Ijazah Ditahan</span><span>Ijazah Dikembalikan</span></div>
-                        </div>
-
-                        <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <h4 class="text-sm font-bold">Jumlah Pengaduan vs Pengaduan Ditindaklanjuti</h4>
-                            <p class="text-[11px] mb-6 text-slate-400">Dihitung dari baris yang lolos filter aktif.</p>
-                            <div class="h-48 flex items-end justify-around border-b pb-2 px-12" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                <div class="w-12 bg-blue-500 rounded-t-lg h-[85%]"></div>
-                                <div class="w-12 bg-teal-500 rounded-t-lg h-[75%]"></div>
-                            </div>
-                            <div class="flex justify-around text-xs text-slate-400 mt-3 font-medium"><span>Jumlah Pengaduan</span><span>Ditindaklanjuti</span></div>
-                        </div>
-
-                        <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <h4 class="text-sm font-bold">Tren Jumlah Pengaduan berdasarkan Tahun/Bulan</h4>
-                            <p class="text-[11px] mb-6 text-slate-400">Periode yang tersedia pada data aktif.</p>
-                            <div class="h-48 flex items-end justify-between border-b pb-2 px-4" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                <div class="w-8 bg-teal-600 rounded-t-lg h-[50%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[40%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[60%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[35%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[70%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[45%]"></div>
-                            </div>
-                            <div class="flex justify-between text-[11px] text-slate-400 mt-3 px-2 font-medium"><span>2025-Jan</span><span>2025-Feb</span><span>2025-Mar</span><span>2025-Apr</span><span>2026-Jan</span><span>2026-Feb</span></div>
-                        </div>
-
-                        <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <h4 class="text-sm font-bold">Ringkasan per Provinsi</h4>
-                            <p class="text-[11px] mb-6 text-slate-400">Agregasi mengikuti Jumlah Pengaduan.</p>
-                            <div class="h-48 flex items-end justify-between border-b pb-2 px-4" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                <div class="w-8 bg-teal-600 rounded-t-lg h-[65%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[60%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[55%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[50%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[45%]"></div><div class="w-8 bg-teal-600 rounded-t-lg h-[40%]"></div>
-                            </div>
-                            <div class="flex justify-between text-[10px] text-slate-400 mt-3 px-1 font-medium"><span>Kaltim</span><span>Jateng</span><span>DKI</span><span>Sulsel</span><span>Jabar</span><span>Jatim</span></div>
-                        </div>
+                    <div class="p-6 rounded-2xl border shadow-sm flex flex-col" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
+                        <h3 class="text-sm font-bold mb-1">Rentang Besaran Kompensasi</h3>
+                        <p class="text-[11px] text-slate-400 mb-4">Jumlah pengaduan unik tiap rentang.</p>
+                        <div id="chart-rentang" class="w-full min-h-[200px]"></div>
                     </div>
                 </div>
 
@@ -423,10 +373,10 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h3 class="text-base font-bold" :class="initTheme() === 'dark' ? 'text-slate-100' : 'text-slate-800'">Peta Provinsi</h3>
-                            <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Ringkasan mengikuti kolom Provinsi dan filter aktif.</p>
+                            <h3 class="text-base font-bold" :class="initTheme() === 'dark' ? 'text-slate-100' : 'text-slate-800'">Peta Provinsi Kompensasi</h3>
+                            <p class="text-xs text-slate-400">Sebaran wilayah kompensasi mengikuti filter aktif.</p>
                         </div>
-                        <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs px-3 py-1 rounded-full font-semibold">Kolom wilayah tersedia</span>
+                        <span class="bg-teal-50 text-teal-700 border border-teal-200 text-xs px-3 py-1 rounded-full font-semibold">Kolom wilayah tersedia</span>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -443,64 +393,48 @@
                         <div class="p-6 rounded-2xl border shadow-sm flex flex-col justify-between" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
                             <div>
                                 <h4 class="text-sm font-bold">Ringkasan Wilayah</h4>
-                                <p class="text-[11px] mb-4 text-slate-400">Legenda mengikuti kolom Provinsi atau Wilayah pada data aktif.</p>
+                                <p class="text-[11px] mb-4 text-slate-400">Legenda mengikuti kolom Provinsi pada data kompensasi.</p>
                                 <div class="space-y-3 text-sm">
-                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Kalimantan Timur</span><span class="font-bold">16</span></div>
-                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Jawa Tengah</span><span class="font-bold">14</span></div>
-                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">DKI Jakarta</span><span class="font-bold">12</span></div>
-                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Sulawesi Selatan</span><span class="font-bold">11</span></div>
-                                    <div class="flex justify-between items-center pb-1"><span class="text-slate-400 font-medium">Jawa Barat</span><span class="font-bold">9</span></div>
+                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Jawa Barat</span><span class="font-bold">1</span></div>
+                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Jawa Tengah</span><span class="font-bold">1</span></div>
+                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">DKI Jakarta</span><span class="font-bold">1</span></div>
+                                    <div class="flex justify-between items-center border-b border-dashed pb-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'"><span class="text-slate-400 font-medium">Jawa Timur</span><span class="font-bold">1</span></div>
+                                    <div class="flex justify-between items-center pb-1"><span class="text-slate-400 font-medium">Banten</span><span class="font-bold">1</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- DATA FILE AKTIF (TABEL UTAMA) -->
+                <!-- TABEL 5 BARIS KOMPENSASI -->
                 <div class="rounded-2xl border shadow-sm overflow-hidden pb-6 transition-colors duration-200"
                      :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
                     <div class="p-6 border-b" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'">
                         <h3 class="text-base font-bold">Data File Aktif</h3>
-                        <p class="text-xs mt-0.5 text-slate-400">Tabel berikut diberi penanda Data contoh dan dapat digantikan oleh unggahan aktual.</p>
+                        <p class="text-xs mt-0.5 text-slate-400">5 baris sumber data kompensasi ditampilkan.</p>
                     </div>
                     
-                    <div class="p-6 pb-2 text-xs text-slate-400 flex justify-between items-center">
-                        <span>6 dari 6 baris ditampilkan</span>
-                        <span class="italic">Klik judul kolom untuk mengurutkan.</span>
-                    </div>
-
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap">
                             <thead>
                                 <tr class="bg-[#162133] text-white text-xs uppercase tracking-wider">
-                                    <th class="py-3 px-4 font-semibold">No</th>
-                                    <th class="py-3 px-4 font-semibold">Tahun</th>
-                                    <th class="py-3 px-4 font-semibold">Bulan</th>
-                                    <th class="py-3 px-4 font-semibold">Jumlah Pengaduan</th>
-                                    <th class="py-3 px-4 font-semibold">Pengaduan Ditindaklanjuti</th>
-                                    <th class="py-3 px-4 font-semibold">Nama Perusahaan</th>
-                                    <th class="py-3 px-4 font-semibold">Provinsi</th>
-                                    <th class="py-3 px-4 font-semibold">Ijazah Ditahan</th>
-                                    <th class="py-3 px-4 font-semibold">Ijazah Dikembalikan</th>
-                                    <th class="py-3 px-4 font-semibold">Status</th>
-                                    <th class="py-3 px-4 font-semibold">Catatan</th>
+                                    <th class="py-3 px-4 font-semibold">NO SURAT</th>
+                                    <th class="py-3 px-4 font-semibold">TANGGAL SURAT</th>
+                                    <th class="py-3 px-4 font-semibold">PERUSAHAAN</th>
+                                    <th class="py-3 px-4 font-semibold">PROVINSI</th>
+                                    <th class="py-3 px-4 font-semibold">NOMINAL PEMBAYARAN</th>
+                                    <th class="py-3 px-4 font-semibold">STATUS</th>
+                                    <th class="py-3 px-4 font-semibold">JUMLAH PEKERJA</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y text-sm" :class="initTheme() === 'dark' ? 'divide-slate-700 text-slate-200' : 'divide-slate-100 text-slate-700'">
-                                <tr class="transition"><td class="py-3 px-4">1</td><td class="py-3 px-4">2025</td><td class="py-3 px-4">Januari</td><td class="py-3 px-4">12</td><td class="py-3 px-4">10</td><td class="py-3 px-4 font-medium">PT Nusantara Karya</td><td class="py-3 px-4">DKI Jakarta</td><td class="py-3 px-4">8</td><td class="py-3 px-4">7</td><td class="py-3 px-4"><span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md text-xs font-semibold">Selesai</span></td><td class="py-3 px-4 text-slate-400 text-xs">Pengaduan ditindaklanjuti dan ijazah telah dikembalikan.</td></tr>
-                                <tr class="transition"><td class="py-3 px-4">2</td><td class="py-3 px-4">2025</td><td class="py-3 px-4">Februari</td><td class="py-3 px-4">9</td><td class="py-3 px-4">7</td><td class="py-3 px-4 font-medium">PT Cipta Mandiri</td><td class="py-3 px-4">Jawa Barat</td><td class="py-3 px-4">6</td><td class="py-3 px-4">4</td><td class="py-3 px-4"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-md text-xs font-semibold">Proses</span></td><td class="py-3 px-4 text-slate-400 text-xs">Menunggu verifikasi perusahaan.</td></tr>
-                                <tr class="transition"><td class="py-3 px-4">3</td><td class="py-3 px-4">2025</td><td class="py-3 px-4">Maret</td><td class="py-3 px-4">14</td><td class="py-3 px-4">13</td><td class="py-3 px-4 font-medium">PT Sejahtera Abadi</td><td class="py-3 px-4">Jawa Tengah</td><td class="py-3 px-4">11</td><td class="py-3 px-4">10</td><td class="py-3 px-4"><span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md text-xs font-semibold">Selesai</span></td><td class="py-3 px-4 text-slate-400 text-xs">Pengembalian dilakukan secara bertahap.</td></tr>
-                                <tr class="transition"><td class="py-3 px-4">4</td><td class="py-3 px-4">2025</td><td class="py-3 px-4">April</td><td class="py-3 px-4">8</td><td class="py-3 px-4">6</td><td class="py-3 px-4 font-medium">PT Surya Logistik</td><td class="py-3 px-4">Jawa Timur</td><td class="py-3 px-4">5</td><td class="py-3 px-4">3</td><td class="py-3 px-4"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-md text-xs font-semibold">Proses</span></td><td class="py-3 px-4 text-slate-400 text-xs">Mediasi masih berjalan.</td></tr>
-                                <tr class="transition"><td class="py-3 px-4">5</td><td class="py-3 px-4">2026</td><td class="py-3 px-4">Januari</td><td class="py-3 px-4">16</td><td class="py-3 px-4">14</td><td class="py-3 px-4 font-medium">PT Bumi Kencana</td><td class="py-3 px-4">Kalimantan Timur</td><td class="py-3 px-4">12</td><td class="py-3 px-4">11</td><td class="py-3 px-4"><span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md text-xs font-semibold">Selesai</span></td><td class="py-3 px-4 text-slate-400 text-xs">Sebagian besar ijazah telah dikembalikan.</td></tr>
-                                <tr class="transition"><td class="py-3 px-4">6</td><td class="py-3 px-4">2026</td><td class="py-3 px-4">Februari</td><td class="py-3 px-4">11</td><td class="py-3 px-4">9</td><td class="py-3 px-4 font-medium">PT Bahari Sentosa</td><td class="py-3 px-4">Sulawesi Selatan</td><td class="py-3 px-4">7</td><td class="py-3 px-4">5</td><td class="py-3 px-4"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-md text-xs font-semibold">Proses</span></td><td class="py-3 px-4 text-slate-400 text-xs">Penjadwalan klarifikasi lanjutan.</td></tr>
+                                <tr class="transition"><td class="py-3 px-4">KMP-001</td><td class="py-3 px-4">2026-01-10</td><td class="py-3 px-4 font-medium">PT Maju Bersama</td><td class="py-3 px-4">Jawa Barat</td><td class="py-3 px-4">25000000</td><td class="py-3 px-4"><span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">Sudah Dibayar</span></td><td class="py-3 px-4">10</td></tr>
+                                <tr class="transition"><td class="py-3 px-4">KMP-002</td><td class="py-3 px-4">2026-01-18</td><td class="py-3 px-4 font-medium">PT Sinar Abadi</td><td class="py-3 px-4">Jawa Tengah</td><td class="py-3 px-4">18000000</td><td class="py-3 px-4"><span class="bg-teal-50 text-teal-700 px-2.5 py-1 rounded-md text-xs font-semibold">Dalam Proses</span></td><td class="py-3 px-4">8</td></tr>
+                                <tr class="transition"><td class="py-3 px-4">KMP-003</td><td class="py-3 px-4">2026-02-05</td><td class="py-3 px-4 font-medium">CV Karya Utama</td><td class="py-3 px-4">DKI Jakarta</td><td class="py-3 px-4">12000000</td><td class="py-3 px-4"><span class="bg-yellow-50 text-yellow-700 px-2.5 py-1 rounded-md text-xs font-semibold">Belum Dibayar</span></td><td class="py-3 px-4">6</td></tr>
+                                <tr class="transition"><td class="py-3 px-4">KMP-004</td><td class="py-3 px-4">2026-02-12</td><td class="py-3 px-4 font-medium">PT Nusantara Sejahtera</td><td class="py-3 px-4">Jawa Timur</td><td class="py-3 px-4">30000000</td><td class="py-3 px-4"><span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-semibold">Sudah Dibayar</span></td><td class="py-3 px-4">12</td></tr>
+                                <tr class="transition"><td class="py-3 px-4">KMP-005</td><td class="py-3 px-4">2026-02-20</td><td class="py-3 px-4 font-medium">PT Harapan Jaya</td><td class="py-3 px-4">Banten</td><td class="py-3 px-4">15000000</td><td class="py-3 px-4"><span class="bg-teal-50 text-teal-700 px-2.5 py-1 rounded-md text-xs font-semibold">Dalam Proses</span></td><td class="py-3 px-4">7</td></tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="p-6 border-t flex justify-end items-center space-x-2" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'">
-                        <button class="px-4 py-2 border rounded-xl text-xs font-medium transition" :class="initTheme() === 'dark' ? 'border-slate-600 text-slate-300 hover:bg-slate-800' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">Sebelumnya</button>
-                        <span class="px-3 py-2 text-xs text-slate-400">Halaman 1 dari 1</span>
-                        <button class="px-4 py-2 border rounded-xl text-xs font-medium transition" :class="initTheme() === 'dark' ? 'border-slate-600 text-slate-300 hover:bg-slate-800' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">Berikutnya</button>
                     </div>
                 </div>
 
@@ -509,49 +443,31 @@
         </main>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- MODAL / POPUP PROFIL PENGGUNA (DI TENGAH LAYAR & PRESISI) -->
-    <!-- ======================================================= -->
+    <!-- MODAL / POPUP PROFIL PENGGUNA -->
     <div x-show="showProfileCard" x-transition.opacity class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" style="display: none;">
         <div @click.away="showProfileCard = false" class="w-full max-w-xl bg-[#101927] text-slate-100 rounded-3xl p-8 shadow-2xl border border-slate-700 relative">
-            
-            <!-- Tombol Silang (Close) -->
             <button @click="showProfileCard = false" class="absolute top-6 right-6 text-slate-400 hover:text-white transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-
             <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
-                <!-- Foto Avatar Melingkar dengan border teal -->
                 <div class="w-28 h-28 rounded-full p-1 border-2 border-teal-400 shrink-0 overflow-hidden shadow-inner">
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" alt="Profil" class="w-full h-full object-cover rounded-full">
                 </div>
-                <!-- Informasi Detail Profil -->
                 <div class="flex-1 space-y-2">
                     <span class="text-xs font-semibold text-teal-400 tracking-wider uppercase">PROFIL PENGGUNA</span>
                     <h3 class="text-3xl font-serif font-bold tracking-tight">Profil</h3>
-                    <p class="text-sm text-slate-300 leading-relaxed pt-1">
-                        Analis Capaian · Kementerian Ketenagakerjaan · pengguna@kemnaker.go.id
-                    </p>
-                    <!-- Tombol Kelola Pengaturan -->
+                    <p class="text-sm text-slate-300 leading-relaxed pt-1">Analis Capaian · Kementerian Ketenagakerjaan · pengguna@kemnaker.go.id</p>
                     <div class="pt-4">
-                        <button @click="currentMenu = 'settings'; showProfileCard = false;" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2.5 rounded-xl text-xs transition inline-flex items-center shadow-md">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            Kelola Pengaturan
-                        </button>
+                        <button @click="currentMenu = 'settings'; showProfileCard = false;" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-5 py-2.5 rounded-xl text-xs transition inline-flex items-center shadow-md">Kelola Pengaturan</button>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ======================================================= -->
     <!-- MODAL / POPUP KONFIRMASI LOGOUT -->
-    <!-- ======================================================= -->
     <div x-show="showLogoutModal" x-transition.opacity class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" style="display: none;">
-        <div @click.away="showLogoutModal = false" class="w-full max-w-sm rounded-3xl p-6 shadow-xl border transition-colors duration-200"
-             :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-            
+        <div @click.away="showLogoutModal = false" class="w-full max-w-sm rounded-3xl p-6 shadow-xl border transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
             <div class="text-center mb-6">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 mb-4">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
@@ -559,21 +475,82 @@
                 <h3 class="text-lg font-bold">Konfirmasi Keluar</h3>
                 <p class="text-xs mt-1" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Apakah Anda yakin ingin keluar?</p>
             </div>
-
             <div class="flex items-center space-x-3">
-                <!-- Tombol Batal -->
-                <button @click="showLogoutModal = false" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold border transition"
-                        :class="initTheme() === 'dark' ? 'border-slate-600 bg-[#162133] text-slate-300 hover:bg-slate-800' : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'">
-                    Batal
-                </button>
-                <!-- Tombol Ya, Keluar (Mengarah ke Landing Page) -->
-                <a href="{{ route('landing') }}" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white text-center transition shadow-sm">
-                    Ya, Keluar
-                </a>
+                <button @click="showLogoutModal = false" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold border transition">Batal</button>
+                <a href="{{ route('landing') }}" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white text-center transition shadow-sm">Ya, Keluar</a>
             </div>
-
         </div>
     </div>
+
+<!-- SCRIPT RENDER APEXCHARTS -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const isDarkMode = document.documentElement.classList.contains('dark') || localStorage.getItem('_x_theme') === '"dark"';
+        const textColor = isDarkMode ? '#cbd5e1' : '#475569';
+        const gridColor = isDarkMode ? '#334155' : '#e2e8f0';
+
+        // 1. Chart Tren Nominal
+        new ApexCharts(document.querySelector("#chart-tren"), {
+            series: [{ name: 'Nominal', data: [43000000, 57000000] }],
+            chart: { type: 'bar', height: 250, background: 'transparent', toolbar: { show: false } },
+            colors: ['#3b82f6'],
+            plotOptions: { bar: { columnWidth: '15%', borderRadius: 3 } },
+            dataLabels: { enabled: false },
+            xaxis: { categories: ['2026-01', '2026-02'], labels: { style: { colors: textColor, fontSize: '10px' } } },
+            yaxis: { show: false },
+            grid: { borderColor: gridColor, strokeDashArray: 0 }
+        }).render();
+
+        // 2. Chart Provinsi
+        new ApexCharts(document.querySelector("#chart-provinsi"), {
+            series: [{ name: 'Pengaduan', data: [1, 1, 1, 1, 1] }],
+            chart: { type: 'bar', height: 250, background: 'transparent', toolbar: { show: false } },
+            colors: ['#10b981'],
+            plotOptions: { bar: { columnWidth: '35%', borderRadius: 2 } },
+            dataLabels: { enabled: false },
+            xaxis: { categories: ['Jawa Barat', 'Jawa Tengah', 'DKI Jakarta', 'Jawa Timur', 'Banten'], labels: { style: { colors: textColor, fontSize: '9px' } } },
+            yaxis: { show: false },
+            grid: { borderColor: gridColor, strokeDashArray: 0 }
+        }).render();
+
+        // 3. Chart Status Donut
+        new ApexCharts(document.querySelector("#chart-status"), {
+            series: [2, 2, 1],
+            labels: ['Sudah Dibayar', 'Dalam Proses', 'Belum Dibayar'],
+            chart: { type: 'donut', height: 210, background: 'transparent' },
+            colors: ['#3b82f6', '#10b981', '#f59e0b'],
+            stroke: { show: false },
+            dataLabels: { enabled: false },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        labels: {
+                            show: true,
+                            name: { show: false },
+                            value: { show: true, fontSize: '22px', fontWeight: 'bold', color: isDarkMode ? '#fff' : '#1e293b' },
+                            total: { show: true, label: 'data', color: textColor, formatter: () => 5 }
+                        }
+                    }
+                }
+            },
+            legend: { position: 'bottom', labels: { colors: textColor } }
+        }).render();
+
+        // 4. Chart Rentang Nominal Line
+        new ApexCharts(document.querySelector("#chart-rentang"), {
+            series: [{ name: 'Jumlah', data: [5, 5, 5, 5, 1, 4] }],
+            chart: { type: 'line', height: 180, background: 'transparent', toolbar: { show: false } },
+            colors: ['#3b82f6'],
+            stroke: { curve: 'straight', width: 2 },
+            markers: { size: 4 },
+            dataLabels: { enabled: false },
+            xaxis: { categories: ['Rp 10.8j–14.4j', 'Rp 14.4j–18j', 'Rp 18j–21.6j', 'Rp 21.6j–25.2j', 'Rp 25.2j–28.8j', 'Rp 28.8j–32.4j'], labels: { style: { colors: textColor, fontSize: '9px' } } },
+            yaxis: { show: false },
+            grid: { show: false }
+        }).render();
+    });
+</script>
 
 </body>
 </html>
