@@ -12,7 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Inter', sans-serif; } </style>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+=======
+>>>>>>> 471a005d0497c5dc67c88444a711ead574a59ccf
 </head>
 <body class="bg-slate-50 flex flex-col h-screen overflow-hidden" 
       x-data="{ 
@@ -70,7 +73,11 @@
     <!-- AREA BAWAH (SIDEBAR + KONTEN) -->
     <div class="flex-1 flex overflow-hidden">
 
+<<<<<<< HEAD
         <!-- SIDEBAR -->
+=======
+<!-- SIDEBAR -->
+>>>>>>> 471a005d0497c5dc67c88444a711ead574a59ccf
         <aside class="w-64 bg-[#162133] text-slate-300 flex flex-col shrink-0 border-r border-slate-800 relative pb-32">
             <div class="flex-1 overflow-y-auto py-6 px-4">
                 

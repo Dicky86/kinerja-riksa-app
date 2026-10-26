@@ -45,5 +45,6 @@ Route::get('/dashboard/kompensasi', function () {
     return view('dashboard.capaian.kompensasi');
 })->name('dashboard.kompensasi');
 
+
 // Rute untuk Form Upload Excel Kasus Ijazah
 Route::post('/import-ijazah', [IjazahController::class, 'simpanData']);
