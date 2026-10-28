@@ -45,6 +45,10 @@ Route::get('/dashboard/kompensasi', function () {
     return view('dashboard.capaian.kompensasi');
 })->name('dashboard.kompensasi');
 
+// 7. Dashboard khusus Posko THR (Tampilan Dummy Front-End)
+Route::get('/dashboard/posko-thr', function () {
+    return view('dashboard.capaian.posko-thr');
+})->name('dashboard.posko-thr');
 
 // Rute untuk Form Upload Excel Kasus Ijazah
 Route::post('/import-ijazah', [IjazahController::class, 'simpanData']);

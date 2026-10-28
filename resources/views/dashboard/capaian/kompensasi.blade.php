@@ -19,11 +19,8 @@
           theme: $persist('light'),
           showLogoutModal: false,
           showProfileCard: false,
-<<<<<<< HEAD
           fileName: 'Belum ada file',      <!-- TAMBAHKAN INI -->
           fileStatus: 'Menunggu file',     <!-- TAMBAHKAN INI -->
-=======
->>>>>>> 471a005d0497c5dc67c88444a711ead574a59ccf
           initTheme() {
               if (this.theme === 'system') {
                   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -191,22 +188,15 @@
             </div>
 
             <!-- ======================================================= -->
-<<<<<<< HEAD
             <!-- TAB: HALAMAN IMPOR DATA (KHUSUS KOMPENSASI) -->
             <!-- ======================================================= -->
             <div x-show="currentMenu === 'import'" x-transition class="space-y-6" style="display: none;" x-data="{ showPreview: false }">
-=======
-            <!-- TAB: HALAMAN IMPOR DATA (SAMA PERSIS DENGAN GAMBAR 2) -->
-            <!-- ======================================================= -->
-            <div x-show="currentMenu === 'import'" x-transition class="space-y-6" style="display: none;">
->>>>>>> 471a005d0497c5dc67c88444a711ead574a59ccf
                 <div class="p-8 rounded-3xl border shadow-sm transition-colors duration-200"
                      :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
                     
                     <div class="flex justify-between items-start border-b pb-4 mb-6" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-100'">
                         <div>
                             <h3 class="text-lg font-bold">Unggah dan Periksa Data</h3>
-<<<<<<< HEAD
                             <p class="text-xs mt-0.5" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Data aktual dari CSV atau Excel akan ditampilkan sebagai pratinjau sebelum disimpan ke dashboard aktif.</p>
                         </div>
                     </div>
@@ -291,46 +281,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-=======
-                            <p class="text-xs mt-0.5" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Data aktual dari CSV ditampilkan sebelum disimpan ke dashboard aktif.</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center"
-                             :class="initTheme() === 'dark' ? 'border-slate-600 bg-slate-800/40' : 'border-blue-200 bg-blue-50/30'">
-                            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                            </div>
-                            <h4 class="text-sm font-bold mb-1">Unggah File CSV</h4>
-                            <p class="text-xs max-w-md mb-6" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Pilih file dari perangkat Anda. Nama kolom, tipe data, isi baris, dan urutan kolom akan dibaca dari file.</p>
-                            
-                            <div class="flex flex-wrap items-center justify-center gap-3">
-                                <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition shadow-sm">Pilih File</button>
-                                <button type="button" class="border hover:bg-opacity-80 text-xs font-semibold px-4 py-2.5 rounded-xl transition" :class="initTheme() === 'dark' ? 'border-slate-600 text-slate-200 bg-slate-800' : 'border-slate-200 text-slate-700 bg-white'">Impor File Excel</button>
-                                <button type="button" class="border hover:bg-opacity-80 text-xs font-semibold px-4 py-2.5 rounded-xl transition" :class="initTheme() === 'dark' ? 'border-slate-600 text-slate-200 bg-slate-800' : 'border-slate-200 text-slate-700 bg-white'">Unduh Template</button>
-                            </div>
-                        </div>
-
-                        <div class="border rounded-2xl p-6 flex flex-col justify-between" :class="initTheme() === 'dark' ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'">
-                            <div>
-                                <h4 class="text-sm font-bold mb-4">Status Validasi</h4>
-                                <div class="space-y-4 text-xs">
-                                    <div class="flex justify-between items-center border-b pb-3" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                        <span :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Nama file</span>
-                                        <span class="font-semibold">Belum ada file</span>
-                                    </div>
-                                    <div class="flex justify-between items-center border-b pb-3" :class="initTheme() === 'dark' ? 'border-slate-700' : 'border-slate-200'">
-                                        <span :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Status</span>
-                                        <span class="bg-slate-600 text-white px-2.5 py-1 rounded-md font-semibold">Menunggu file</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3 mt-6">
-                                <button type="button" class="flex-1 border text-xs font-semibold py-2.5 rounded-xl transition" :class="initTheme() === 'dark' ? 'border-slate-600 bg-slate-800 text-slate-200' : 'border-slate-200 bg-white text-slate-700'">Validasi Data</button>
-                                <button type="button" class="flex-1 bg-blue-600 text-white text-xs font-semibold py-2.5 rounded-xl transition shadow-sm">Terapkan Data</button>
-                            </div>
->>>>>>> 471a005d0497c5dc67c88444a711ead574a59ccf
                         </div>
                     </div>
 
@@ -365,6 +315,14 @@
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
                                 <option>Kompensasi</option>
+                                <option>Kasus Penanganan Ijazah</option>
+                                <option>Waspadu</option>
+                                <option>Penetapan Ulang</option>
+                                <option>Data Putusan Sidik</option>
+                                <option>Pengawasan TKA</option>
+                                <option>Norma K3</option>
+                                <option>Pemeriksaan Norma Kerja & Perempuan</option>
+                                <option>Posko THR</option>
                             </select>
                         </div>
                         <div>
@@ -379,6 +337,7 @@
                             <select class="w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition"
                                     :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-600 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-700'">
                                 <option>Semua Bulan</option>
+                                <option>Januari</option><option>Februari</option><option>Maret</option><option>April</option><option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option><option>September</option><option>Oktober</option><option>November</option><option>Desember</option>
                             </select>
                         </div>
                     </div>
