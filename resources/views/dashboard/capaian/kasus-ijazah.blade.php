@@ -67,7 +67,7 @@
         </div>
     </header>
 
-    <!-- AREA BAWAH (SIDEBAR + KONTEN) -->
+<!-- AREA BAWAH (SIDEBAR + KONTEN) -->
     <div class="flex-1 flex overflow-hidden">
 
         <!-- SIDEBAR -->
@@ -111,7 +111,7 @@
         </aside>
 
         <!-- AREA KONTEN ISI UTAMA -->
-        <main class="flex-1 overflow-y-auto p-8 bg-slate-50 space-y-8 relative">
+        <main class="flex-1 overflow-y-auto px-8 pt-4 pb-8 bg-slate-50 space-y-5 relative">
             
             <!-- TAB PENGATURAN -->
             <div x-show="currentMenu === 'settings'" x-transition class="space-y-6" style="display: none;">
@@ -366,56 +366,184 @@
                     </div>
                 </div>
 
-                <div class="p-6 rounded-2xl border shadow-sm transition-colors duration-200"
-                     :class="initTheme() === 'dark' ? 'bg-[#1e293b] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                        <div>
-                            <h3 class="text-base font-bold">Ringkasan Data</h3>
-                            <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">KPI dihitung dari Data contoh, bukan data aktual.</p>
+<!-- RINGKASAN DATA (4 KOTAK) - LIVE DATABASE -->
+                    <div class="mb-2">
+                        <p class="text-xs" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">KPI dihitung dari Data contoh, bukan data aktual.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-5">
+                        <div class="bg-[#162133] p-5 rounded-2xl border border-slate-700/80 shadow-md">
+                            <p class="text-xs font-medium text-slate-400 mb-2">Total Kasus Masuk</p>
+                            <h3 class="text-3xl font-extrabold text-white mb-1">{{ $totalPengaduan }}</h3>
+                            <p class="text-[10px] text-slate-400">Seluruh aduan terdaftar</p>
+                        </div>
+                        <div class="bg-[#162133] p-5 rounded-2xl border border-slate-700/80 shadow-md">
+                            <p class="text-xs font-medium text-slate-400 mb-2">Total Ijazah Ditahan</p>
+                            <h3 class="text-3xl font-extrabold text-amber-500 mb-1">{{ $totalDitahan }}</h3>
+                            <p class="text-[10px] text-slate-400">Akumulasi ijazah tertahan</p>
+                        </div>
+                        <div class="bg-[#162133] p-5 rounded-2xl border border-slate-700/80 shadow-md">
+                            <p class="text-xs font-medium text-slate-400 mb-2">Total Pengembalian</p>
+                            <h3 class="text-3xl font-extrabold text-emerald-500 mb-1">{{ $totalDikembalikan }}</h3>
+                            <p class="text-[10px] text-slate-400">Ijazah yang dikembalikan</p>
+                        </div>
+                        <div class="bg-[#162133] p-5 rounded-2xl border border-slate-700/80 shadow-md">
+                            <p class="text-xs font-medium text-slate-400 mb-2">Tingkat Keberhasilan</p>
+                            <h3 class="text-3xl font-extrabold text-blue-400 mb-1">
+                                {{ $totalDitahan + $totalDikembalikan > 0 ? round(($totalDikembalikan / ($totalDitahan + $totalDikembalikan)) * 100, 1) : 0 }}%
+                            </h3>
+                            <p class="text-[10px] text-slate-400">Rasio pengembalian sukses</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Jumlah Pengaduan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">70</span></div>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Ijazah yang Ditahan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">49</span></div>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Pengaduan yang Ditindaklanjuti</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">59</span></div>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Ijazah yang Dikembalikan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">40</span></div>
-                        </div>
-                        <div class="p-4 rounded-xl border flex flex-col justify-between transition-colors" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <span class="text-xs font-semibold" :class="initTheme() === 'dark' ? 'text-slate-400' : 'text-slate-500'">Jumlah Perusahaan</span>
-                            <div class="my-3"><span class="text-3xl font-extrabold">5</span></div>
-                        </div>
-                    </div>
-                </div>
+                    <!-- 3 DIAGRAM GRAFIK CAPAIAN - LIVE DATABASE -->
+                    <div class="mb-8">
+                        <h2 class="text-base font-bold text-white mb-1">Statistik Capaian (Real-time)</h2>
+                        <p class="text-[11px] text-slate-400 mb-4">Grafik otomatis menyesuaikan dengan isi database.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <!-- Grafik 1: Status Penanganan -->
+                            <div class="bg-[#162133] p-6 rounded-2xl border border-slate-700/80 h-64 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-white">Status Penanganan</h3>
+                                    <p class="text-[10px] text-slate-400">Rasio Selesai vs Proses</p>
+                                </div>
+                                <div class="flex items-center gap-4 mt-2">
+                                    <div class="w-16 h-16 rounded-full border-[6px] border-slate-700 flex items-center justify-center flex-col shrink-0 relative overflow-hidden">
+                                        <!-- Simulasi Donut Chart CSS Sederhana -->
+                                        <div class="absolute inset-0 bg-blue-500" style="clip-path: polygon(0 0, 100% 0, 100% {{ $persenSelesai }}%, 0 {{ $persenSelesai }}%);"></div>
+                                        <div class="absolute inset-1 bg-[#162133] rounded-full flex items-center justify-center">
+                                            <span class="text-white font-bold text-xs relative z-10">{{ $totalPengaduan }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full text-xs text-slate-300 space-y-2">
+                                        <div class="flex justify-between border-b border-slate-700 pb-1">
+                                            <span class="flex items-center gap-1.5"><div class="w-2 h-2 bg-blue-500 rounded-full"></div> Selesai</span>
+                                            <span class="font-bold text-[11px]">{{ $statusSelesai }} ({{ $persenSelesai }}%)</span>
+                                        </div>
+                                        <div class="flex justify-between border-b border-slate-700 pb-1">
+                                            <span class="flex items-center gap-1.5"><div class="w-2 h-2 bg-slate-700 rounded-full"></div> Proses</span>
+                                            <span class="font-bold text-[11px]">{{ $statusProses }} ({{ $persenProses }}%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- GRAFIK CAPAIAN -->
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="p-6 rounded-2xl border shadow-sm flex flex-col transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <div class="mb-2"><h3 class="text-sm font-bold">Ijazah Ditahan vs Ijazah Dikembalikan</h3></div>
-                            <div id="chart-donut" class="flex-1 w-full flex justify-center items-center min-h-[250px]"></div>
-                        </div>
-                        <div class="p-6 rounded-2xl border shadow-sm flex flex-col transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <div class="mb-2"><h3 class="text-sm font-bold">Tren Status Tindak Lanjut</h3></div>
-                            <div id="chart-area" class="flex-1 w-full min-h-[250px]"></div>
-                        </div>
-                        <div class="p-6 rounded-2xl border shadow-sm flex flex-col transition-colors duration-200" :class="initTheme() === 'dark' ? 'bg-[#162133] border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'">
-                            <div class="mb-2"><h3 class="text-sm font-bold">Ringkasan per Provinsi</h3></div>
-                            <div id="chart-bar" class="flex-1 w-full min-h-[250px]"></div>
+                            <!-- Grafik 2: Top Perusahaan -->
+                            <div class="bg-[#162133] p-6 rounded-2xl border border-slate-700/80 h-64 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-white">Top 4 Perusahaan</h3>
+                                    <p class="text-[10px] text-slate-400">Paling banyak dilaporkan</p>
+                                </div>
+                                <div class="w-full h-32 flex items-end justify-around border-b border-slate-700 pb-2">
+                                    @foreach($topPerusahaan as $nama => $jumlah)
+                                        <div class="w-10 bg-amber-500 rounded-t relative group transition-all" style="height: {{ ($jumlah / $maxPerusahaan) * 100 }}%;">
+                                            <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-white opacity-0 group-hover:opacity-100 transition-opacity">{{ $jumlah }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="flex justify-around text-[9px] text-slate-400 mt-2">
+                                    @foreach($topPerusahaan as $nama => $jumlah)
+                                        <span class="truncate w-10 text-center cursor-help" title="{{ $nama }}">{{ substr($nama, 0, 5) }}..</span>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Grafik 3: Top Provinsi -->
+                            <div class="bg-[#162133] p-6 rounded-2xl border border-slate-700/80 h-64 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-xs font-bold text-white">Top 5 Provinsi</h3>
+                                    <p class="text-[10px] text-slate-400">Sebaran wilayah terbanyak</p>
+                                </div>
+                                <div class="w-full h-32 flex items-end justify-around border-b border-slate-700 pb-2">
+                                    @foreach($topProvinsi as $prov => $jumlah)
+                                        <div class="w-8 bg-emerald-500 rounded-t relative group transition-all" style="height: {{ ($jumlah / $maxProvinsi) * 100 }}%;">
+                                            <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-white opacity-0 group-hover:opacity-100 transition-opacity">{{ $jumlah }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="flex justify-around text-[9px] text-slate-400 mt-2">
+                                    @foreach($topProvinsi as $prov => $jumlah)
+                                        <span class="truncate w-8 text-center cursor-help" title="{{ $prov }}">{{ substr($prov, 0, 4) }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <!-- PETA PROVINSI & RINGKASAN WILAYAH -->
+<!-- Area Peta Provinsi (Google GeoChart Real-time) -->
+                        <div class="bg-[#162133] rounded-2xl border border-slate-700 h-72 md:col-span-2 flex items-center justify-center shadow-md relative overflow-hidden p-2">
+                            <!-- Container untuk Peta -->
+                            <div id="map_indonesia" class="w-full h-full"></div>
+                        </div>
+
+                        <!-- Script Khusus Render Peta -->
+                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                        <script type="text/javascript">
+                            google.charts.load('current', {
+                                'packages':['geochart']
+                            });
+                            google.charts.setOnLoadCallback(drawRegionsMap);
+
+                            function drawRegionsMap() {
+                                // // Menerjemahkan data $perProvinsi dari Controller ke format Google Chart
+                                var data = google.visualization.arrayToDataTable([
+                                    ['Provinsi', 'Jumlah Kasus'],
+                                    @foreach($perProvinsi as $prov => $jumlah)
+                                        @php
+                                            $namaProv = trim($prov);
+                                            
+                                            // Penerjemah otomatis khusus untuk standar Google GeoChart
+                                            if (stripos($namaProv, 'Jakarta') !== false) {
+                                                // Google GeoChart hanya membaca "Jakarta Raya"
+                                                $namaProv = 'Jakarta Raya';
+                                            } elseif (stripos($namaProv, 'Yogyakarta') !== false || stripos($namaProv, 'DIY') !== false) {
+                                                $namaProv = 'Yogyakarta';
+                                            } elseif (stripos($namaProv, 'Bangka Belitung') !== false) {
+                                                $namaProv = 'Bangka-Belitung'; // Pakai strip jika ada kasus ini
+                                            }
+                                        @endphp
+                                        // Nama yang sudah diterjemahkan dimasukkan ke peta
+                                        ['{{ $namaProv }}', {{ $jumlah }}],
+                                    @endforeach
+                                ]);
+
+                                var options = {
+                                    region: 'ID', // Kode Negara Indonesia
+                                    resolution: 'provinces', // Memotong peta berdasarkan batas provinsi
+                                    backgroundColor: 'transparent',
+                                    datalessRegionColor: '#1e293b', // Warna gelap (slate-800) untuk provinsi yang datanya 0
+                                    colorAxis: {
+                                        // Gradasi warna kasus: Biru (sedikit) -> Hijau -> Kuning/Oranye (banyak)
+                                        colors: ['#3b82f6', '#10b981', '#f59e0b'] 
+                                    },
+                                    tooltip: { textStyle: { color: '#0f172a' }, showColorCode: true },
+                                    keepAspectRatio: true
+                                };
+
+                                var chart = new google.visualization.GeoChart(document.getElementById('map_indonesia'));
+                                chart.draw(data, options);
+                            }
+                        </script>
+                        
+                        <!-- Ringkasan Wilayah (Terhubung ke Data Provinsi dari Controller) -->
+                        <div class="bg-[#162133] rounded-2xl border border-slate-700 p-6 h-72 overflow-y-auto shadow-md">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-white font-bold text-sm">Ringkasan Wilayah</h3>
+                                <span class="bg-teal-900/50 text-teal-400 text-[9px] font-bold px-2 py-1 rounded border border-teal-800">Aktif</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mb-4 border-b border-slate-700 pb-2">Distribusi data berdasarkan wilayah provinsi.</p>
+                            <ul class="text-xs font-medium text-slate-300 space-y-2">
+                                @foreach($perProvinsi as $prov => $jumlah)
+                                <li class="flex justify-between items-center border-b border-slate-800 pb-1.5">
+                                    <span>{{ $prov }}</span>
+                                    <span class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">{{ $jumlah }} kasus</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
 
                 <!-- TABEL DATA FILE AKTIF (DASHBOARD) -->
                 <div class="rounded-2xl border shadow-sm overflow-hidden pb-6 transition-colors duration-200"

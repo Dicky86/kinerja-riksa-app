@@ -1,10 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB; // <-- WAJIB DITAMBAHKAN UNTUK MENGAMBIL DATABASE
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PerempuanDanAnakController;
-use App\Http\Controllers\IjazahController; // Pindahkan ke atas agar rapi
+use App\Http\Controllers\IjazahController;
 
 // 1. Buka web pertama kali -> Muncul halaman gedung
 Route::get('/', function () {
@@ -26,19 +25,8 @@ Route::get('/home', function () {
     return view('dashboard.home');
 })->name('home');
 
-// 5. Dashboard khusus Kasus Penanganan Ijazah
-Route::get('/dashboard/kasus-ijazah', function () {
-    // Tarik semua data, filter baris kosong
-    $dataIjazah = DB::table('penanganan_ijazah')
-                    ->where('perusahaan', '!=', '')
-                    ->where('perusahaan', '!=', '-')
-                    ->whereNotNull('perusahaan')
-                    ->orderBy('id', 'asc')
-                    ->get();
-    
-    // PERHATIKAN BARIS INI: Menggunakan dashboard.capaian.kasus-ijazah
-    return view('dashboard.capaian.kasus-ijazah', ['dataIjazah' => $dataIjazah]);
-})->name('dashboard.kasus-ijazah');
+// 5. Dashboard khusus Kasus Penanganan Ijazah (Menggunakan Controller sesuai standar MVC)
+Route::get('/dashboard/kasus-ijazah', [IjazahController::class, 'index'])->name('dashboard.kasus-ijazah');
 
 // 6. Dashboard khusus Kompensasi
 Route::get('/dashboard/kompensasi', function () {
@@ -50,5 +38,5 @@ Route::get('/dashboard/posko-thr', function () {
     return view('dashboard.capaian.posko-thr');
 })->name('dashboard.posko-thr');
 
-// Rute untuk Form Upload Excel Kasus Ijazah
-Route::post('/import-ijazah', [IjazahController::class, 'simpanData']);
+// Rute untuk Form Upload & Simpan Excel Kasus Ijazah ke Database (via Controller)
+Route::post('/import-ijazah', [IjazahController::class, 'simpanData'])->name('import.ijazah');
