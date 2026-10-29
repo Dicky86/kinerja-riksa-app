@@ -478,33 +478,27 @@
                             <div id="map_indonesia" class="w-full h-full"></div>
                         </div>
 
-                        <!-- Script Khusus Render Peta -->
                         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                         <script type="text/javascript">
                             google.charts.load('current', {
                                 'packages':['geochart']
                             });
                             google.charts.setOnLoadCallback(drawRegionsMap);
-
                             function drawRegionsMap() {
-                                // // Menerjemahkan data $perProvinsi dari Controller ke format Google Chart
                                 var data = google.visualization.arrayToDataTable([
                                     ['Provinsi', 'Jumlah Kasus'],
                                     @foreach($perProvinsi as $prov => $jumlah)
                                         @php
                                             $namaProv = trim($prov);
                                             
-                                            // Penerjemah otomatis khusus untuk standar Google GeoChart
                                             if (stripos($namaProv, 'Jakarta') !== false) {
-                                                // Google GeoChart hanya membaca "Jakarta Raya"
                                                 $namaProv = 'Jakarta Raya';
                                             } elseif (stripos($namaProv, 'Yogyakarta') !== false || stripos($namaProv, 'DIY') !== false) {
                                                 $namaProv = 'Yogyakarta';
                                             } elseif (stripos($namaProv, 'Bangka Belitung') !== false) {
-                                                $namaProv = 'Bangka-Belitung'; // Pakai strip jika ada kasus ini
+                                                $namaProv = 'Bangka-Belitung'; 
                                             }
                                         @endphp
-                                        // Nama yang sudah diterjemahkan dimasukkan ke peta
                                         ['{{ $namaProv }}', {{ $jumlah }}],
                                     @endforeach
                                 ]);
